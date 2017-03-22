@@ -1,8 +1,12 @@
 def actualiser():
     global xDiff
-    xDiff = xMax - xMin
     global yDiff
+    global xUtilFen
+    global yUtilFen
+    xDiff = xMax - xMin
     yDiff = yMax - yMin
+    xUtilFen = xFen - 2 * marges
+    yUtilFen = yFen - 2 * marges
 
 
 def set_couleur(r, v, b):
@@ -31,18 +35,20 @@ xFen = 800
 yFen = 500
 marges = 20
 xUtilFen = xFen - 2 * marges
+xFenMax = xFen//2-marges
 yUtilFen = yFen - 2 * marges
+yFenMax = yFen//2-marges
 Dyna = False
 
 # paramètres du repère
 xMin = -5
 xMax = 5
-xPas = 1
+xStep = 1
 xDiff = xMax - xMin
 
 yMin = -5
 yMax = 5
-yPas = 1
+yStep = 1
 yDiff = yMax - yMin
 
 # paramètre du tracer
