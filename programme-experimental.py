@@ -1,6 +1,3 @@
-#programme experimental : la console sera ouverte lors du lancement du programme
-
-
 # -*- coding:UTF-8 -*-
 
 import time
@@ -9,28 +6,13 @@ import turtle
 from tkinter import *
 import math
 import R
+import operations
+
+expression = []
 
 
 # fonction pour boutons
 # ATTENTION ONT BESOIN DU PROGRAMME PRINCIPAL
-
-
-def mode_calc():
-    t.clear()
-    l_mode["text"] = "Calculatrice"
-    R.Dyna = False
-
-
-def mode_graph():
-    t.clear()
-    l_mode["text"] = "Grapheur"
-    R.Dyna = False
-
-
-def mode_dyna():
-    t.clear()
-    l_mode["text"] = "Dynamique"
-    R.Dyna = True
 
 
 def key_off():
@@ -40,170 +22,101 @@ def key_off():
 
 def key_ac():
     l_expression["text"] = ""
+    expression.clear()
     R.Dyna = False
+    t.clear()
+    time.sleep(0.5)
     t.clear()
 
 
-def key_arrondi():
-    print("Arrondi de " + l_expression["text"] + " …")
-
-
-def key_effacer():
-    chaine = ""
-    for i in range(len(l_expression["text"]) - 1):
-        chaine += l_expression["text"][i]
-    l_expression["text"] = chaine
-
-
-def key_pi():
-    l_expression["text"] += "π"
-
-
-def key_virg():
-    l_expression["text"] += ","
-
-
 def key_plus():
-    l_expression["text"] += "+"
+    boite_de_dialogue2(operations.somme, 'Nombre 1:', 'Nombre 2:', 'Somme')
 
 
 def key_moins():
-    l_expression["text"] += "-"
+    boite_de_dialogue2(operations.soustraction, 'Nombre 1:', 'Nombre 2:', 'Soustraction')
 
 
 def key_fois():
-    l_expression["text"] += "×"
+    boite_de_dialogue2(operations.produit, 'Nombre 1:', 'Nombre 2:', 'Multiplication')
 
 
 def key_div():
-    l_expression["text"] += "÷"
+    boite_de_dialogue2(operations.division, 'Nombre 1:', 'Nombre 2:', 'Division')
 
 
 def key_pow():
-    l_expression["text"] += "^("
+    boite_de_dialogue2(math.pow, 'Nombre', 'Exposant', 'Puissance')
 
 
-def key_carre():
-    l_expression["text"] += "²"
-
-
-def key_racine():
-    l_expression["text"] += "√("
+def key_sqrt():
+    boite_de_dialogue1(math.sqrt, 'Nombre', 'Racine')
 
 
 def key_exp():
-    l_expression["text"] += "exp("
+    boite_de_dialogue1(math.exp, 'Nombre', 'Exponentielle')
 
 
 def key_ln():
-    l_expression["text"] += "ln("
+    # TODO ajouter ln
+    print('à ajouter')
 
 
 def key_log():
-    l_expression["text"] += "log("
+    boite_de_dialogue2(math.log, "Nombre", "Base", "logarithme")
 
 
 def key_e():
-    l_expression["text"] += "×10^("
+    expression.append("×")
+    expression.append("10")
+    expression.append("^")
+    l_expression["text"] = str_equation(expression)
 
 
 def key_cos():
-    l_expression["text"] += "cos("
+    boite_de_dialogue1(math.cos, "Nombre", "cosinus")
 
 
 def key_acos():
-    l_expression["text"] += "cos⁻¹("
+    boite_de_dialogue1(math.acos, "Nombre", "arc cosinus")
 
 
 def key_sin():
-    l_expression["text"] += "sin("
+    boite_de_dialogue1(math.sin, "Nombre", "sinus")
 
 
 def key_asin():
-    l_expression["text"] += "sin⁻¹("
+    boite_de_dialogue1(math.asin, "Nombre", "arc sinus")
 
 
 def key_tan():
-    l_expression["text"] += "tan("
+    boite_de_dialogue1(math.tan, "Nombre", "tangente")
 
 
 def key_atan():
-    l_expression["text"] += "tan⁻¹("
-
-
-def key_parenthese_ouvr():
-    l_expression["text"] += "("
-
-
-def key_parenthese_ferm():
-    l_expression["text"] += ")"
-
-
-def key_egal():
-    l_expression["text"] += "="
-
-
-def key_0():
-    l_expression["text"] += "0"
-
-
-def key_1():
-    l_expression["text"] += "1"
-
-
-def key_2():
-    l_expression["text"] += "2"
-
-
-def key_3():
-    l_expression["text"] += "3"
-
-
-def key_4():
-    l_expression["text"] += "4"
-
-
-def key_5():
-    l_expression["text"] += "5"
-
-
-def key_6():
-    l_expression["text"] += "6"
-
-
-def key_7():
-    l_expression["text"] += "7"
-
-
-def key_8():
-    l_expression["text"] += "8"
-
-
-def key_9():
-    l_expression["text"] += "9"
-
-
-def key_x():
-    l_expression["text"] += "x"
-
-
-def key_a():
-    l_expression["text"] += "a"
+    boite_de_dialogue1(math.atan, "Nombre", "arc tangente")
 
 
 def test():
-    var = -25
-    print(var)
-    print(xcoord_rep_t(xcoord_t_rep(var)))
-    print(xcoord_t_rep(xcoord_rep_t(var)))
+    print(expression)
 
 
 def executer():
     if l_mode["text"] == "Calculatrice":
         t.clear()
-        clearT()
-        t.up()
+        # clearT()
+        # t.up()
+        t.speed(1)
+        t.st()
+        t.pu()
         t.goto(0, 0)
+        t.pd()
+        t.goto(coords(R.xMax, R.yMax, R.xMin, R.xMax, -R.xFenMax, R.xFenMax, R.yMin, R.yMax, -R.yFenMax, R.yFenMax))
+        t.goto(coords(R.xMax, R.yMin, R.xMin, R.xMax, -R.xFenMax, R.xFenMax, R.yMin, R.yMax, -R.yFenMax, R.yFenMax))
+        t.goto(coords(R.xMin, R.yMin, R.xMin, R.xMax, -R.xFenMax, R.xFenMax, R.yMin, R.yMax, -R.yFenMax, R.yFenMax))
+        t.goto(coords(R.xMin, R.yMax, R.xMin, R.xMax, -R.xFenMax, R.xFenMax, R.yMin, R.yMax, -R.yFenMax, R.yFenMax))
+        t.goto(coords(R.xMax, R.yMax, R.xMin, R.xMax, -R.xFenMax, R.xFenMax, R.yMin, R.yMax, -R.yFenMax, R.yFenMax))
+
         t.write(l_expression["text"])
     elif l_mode["text"] == "Grapheur":
         tracer_graphe()
@@ -218,20 +131,78 @@ def executer():
         print("erreur mode")
 
 
-# fen de param ds menu
-def param_repere():
+def boite_de_dialogue2(func, nb1, nb2, titre):
+    def ok():
+        if e_nb_1.get() == 'x' or e_nb_1.get() == 'a':
+            a = e_nb_1.get()
+        else:
+            a = int(e_nb_1.get())
+
+        if e_nb_2.get() == 'x' or e_nb_2.get() == 'a':
+            b = e_nb_2.get()
+        else:
+            b = int(e_nb_2.get())
+
+        sequence.append([func, a, b])
+        print(sequence)
+        dialogue.destroy()
+
+    dialogue = tk.Toplevel(calc)
+    dialogue.title(titre)
+    tk.Label(dialogue, text=nb1).pack()
+    e_nb_1 = tk.StringVar()
+    tk.Entry(dialogue, textvariable=e_nb_1).pack()
+    tk.Button(dialogue, text='résultat précédant').pack()
+
+    tk.Label(dialogue, text=nb2).pack()
+    e_nb_2 = tk.StringVar()
+    tk.Entry(dialogue, textvariable=e_nb_2).pack()
+    tk.Button(dialogue, text='résultat précédant').pack()
+    tk.Button(dialogue, text="OK", command=ok).pack()
+    dialogue.mainloop()
+
+
+def boite_de_dialogue1(func, nb1, titre):
+    def ok():
+        try:
+            a = int(e_nb_1.get())
+        except ValueError:
+            if e_nb_1.get() == 'x' or e_nb_1.get() == 'a':
+                a = e_nb_1.get()
+            else:
+                raise ValueError
+
+        sequence.append([func, a])
+        print(sequence)
+        dialogue.destroy()
+
+    dialogue = tk.Toplevel(calc)
+    dialogue.title(titre)
+    tk.Label(dialogue, text=nb1).pack()
+    e_nb_1 = tk.StringVar()
+    tk.Entry(dialogue, textvariable=e_nb_1).pack()
+    tk.Button(dialogue, text='résultat précédant').pack()
+    tk.Button(dialogue, text="OK", command=ok).pack()
+    dialogue.mainloop()
+
+
+# param ds menu
+def menu_repere():
     def ok():
         R.xMin = float(xMin.get())
         R.xMax = float(xMax.get())
         R.yMin = float(yMin.get())
         R.yMax = float(yMax.get())
-        R.xPas = float(xPas.get())
-        R.yPas = float(yPas.get())
+        R.xStep = float(xPas.get())
+        R.yStep = float(yPas.get())
         R.actualiser()
         fen_repere.destroy()
 
+    # déclaration de la fenêtre
     fen_repere = tk.Toplevel(calc)
     fen_repere.title("repère")
+
+    # déclaration des labels
     l_xMin = tk.Label(fen_repere, text="x min")
     l_xMax = tk.Label(fen_repere, text="x max")
     l_yMin = tk.Label(fen_repere, text="y min")
@@ -239,6 +210,7 @@ def param_repere():
     l_xpas = tk.Label(fen_repere, text="pas x")
     l_ypas = tk.Label(fen_repere, text="pas y")
 
+    # déclaration des entrées et de leurs labels
     xMin = StringVar()
     xMin.set(str(R.xMin))
     e_xMin = Entry(fen_repere, textvariable=xMin)
@@ -256,13 +228,14 @@ def param_repere():
     e_yMax = Entry(fen_repere, textvariable=yMax)
 
     xPas = StringVar()
-    xPas.set(str(R.xPas))
+    xPas.set(str(R.xStep))
     e_xPas = Entry(fen_repere, textvariable=xPas)
 
     yPas = StringVar()
-    yPas.set(str(R.yPas))
+    yPas.set(str(R.yStep))
     e_yPas = Entry(fen_repere, textvariable=yPas)
 
+    # affichage
     l_xMin.grid(column=1, row=1, padx=2, pady=2)
     e_xMin.grid(column=1, row=2, padx=2, pady=2)
     l_yMin.grid(column=1, row=3, padx=2, pady=2)
@@ -278,7 +251,7 @@ def param_repere():
     tk.Button(fen_repere, text="ok", command=ok).grid(row=5, column=2, padx=2, pady=2)
 
 
-def param_dyna():
+def menu_dyna():
     def ok():
         R.aMin = float(amin.get())
         R.aMax = float(amax.get())
@@ -286,14 +259,17 @@ def param_dyna():
         R.pause = float(pause.get())
         fen_dyna.destroy()
 
+    # déclaration de la fenêtre
     fen_dyna = tk.Toplevel(calc)
     fen_dyna.title("paramètres de la fenêtre dynamique")
 
+    # déclaration des labels
     l_aMin = tk.Label(fen_dyna, text="a min")
     l_aMax = tk.Label(fen_dyna, text="a max")
     l_pas = tk.Label(fen_dyna, text="pas")
     l_pause = tk.Label(fen_dyna, text="pause")
 
+    # déclaration des variables des entrées
     amin = StringVar()
     amin.set(str(R.aMin))
     amax = StringVar()
@@ -303,11 +279,13 @@ def param_dyna():
     pause = StringVar()
     pause.set(R.pause)
 
+    # déclaration des entrées
     e_aMin = tk.Entry(fen_dyna, textvariable=amin)
     e_aMax = tk.Entry(fen_dyna, textvariable=amax)
     e_pas = tk.Entry(fen_dyna, textvariable=pas)
     e_pause = tk.Entry(fen_dyna, textvariable=pause)
 
+    # affichage
     l_aMin.grid(column=1, row=1)
     e_aMin.grid(column=1, row=2)
     l_aMax.grid(column=2, row=1)
@@ -319,9 +297,12 @@ def param_dyna():
     Button(fen_dyna, text="ok", command=ok).grid(column=1, row=5)
 
 
-def parm_pen():
+def menu_pen():
     def ok():
         R.couleur = R.set_couleur(rouge.get(), vert.get(), bleu.get())
+        R.rouge = rouge.get()
+        R.vert = vert.get()
+        R.bleu = bleu.get()
         R.epaisseur = float(epaiseur.get())
         R.précision = float(precision.get())
         fen_pen.destroy()
@@ -375,57 +356,76 @@ def parm_pen():
     tk.Button(fen_pen, text="OK", command=ok).pack(side="bottom")
 
 
-def get_equation():
-    return l_expression["text"]
+def adapter():
+    # aloue la taille dispo a la tortue
+    R.xFen = calc.winfo_width() - f_clavier.winfo_width() - 30
+    R.yFen = calc.winfo_height() - l_mode.winfo_height() - 30
+
+    R.actualiser()
+    fenTortue.destroy()
+    global fenTortue
+    global ecran
+    global t
+    fenTortue = turtle.Canvas(f_turtle, height=R.yFen, width=R.xFen)
+    fenTortue.pack(padx=10, pady=10)
+    ecran = turtle.TurtleScreen(fenTortue)
+    t = turtle.RawTurtle(ecran)
+    R.actualiser()
+    t.ht()
+
+
+def mode_calc():
+    t.clear()
+    l_mode["text"] = "Calculatrice"
+    R.Dyna = False
+
+
+def mode_graph():
+    t.clear()
+    l_mode["text"] = "Grapheur"
+    R.Dyna = False
+
+
+def mode_dyna():
+    t.clear()
+    l_mode["text"] = "Dynamique"
+    R.Dyna = True
+
+
+def str_equation(expr):
+    str_expr = ""
+    for i in range(len(expr)):
+        str_expr += expr[i]
+    return str_expr
 
 
 # fonctions de calcul
-calculer = lambda x: math.expm1(x)
-calculer_d = lambda x, a: a / x
+def calculer(x):
+    return math.sin(x)
+
+
+def calculer_d(x, a):
+    return a / x
 
 
 # fonctions de coordonées
 
-def xcoord_t_rep(x):
-    # retuorne les abs de la fen à partir de celles du repère
-    try:
-        return (R.xUtilFen / R.xDiff) * (x - R.xMin) - R.xUtilFen // 2
-    except ZeroDivisionError:
-        tk.messagebox.showerror("erreur ", "les valeurs entrées e x doivent être differntes")
+def coord(x, de_min, de_max, a_min, a_max):
+    de_diff = de_max - de_min
+    a_diff = a_max - a_min
+    assert de_diff != 0, "Les valeurs min et max doivent etres ≠"
+    assert a_diff != 0, "Les valeurs min et max doivent etres ≠"
+    return (a_diff / de_diff) * (x - de_min) - a_diff // 2
 
 
-def ycoord_t_rep(y):
-    # retuorne les ordonnées de la fen à partir de celles du repère
-    try:
-        return (R.yUtilFen / R.yDiff) * (y - R.yMin) - R.yUtilFen // 2
-    except ZeroDivisionError:
-        tk.messagebox.showerror("erreur ", "les valeurs entrées e y doivent être differntes")
-
-
-def coord_t_rep(x, y):
+def coords(x, y, de_xmin, de_xmax, a_xmin, a_xmax, de_ymin,
+           de_ymax, a_ymin, a_ymax):
     # retuorne les cocrdonnées de la fen à partir de celles du repère
 
-    return xcoord_t_rep(x), ycoord_t_rep(y)
+    return coord(x, de_xmin, de_xmax, a_xmin, a_xmax), coord(y, de_ymin, de_ymax, a_ymin, a_ymax)
 
 
-def xcoord_rep_t(x):
-    try:
-        return -(R.xMin - (R.xDiff / R.xUtilFen) * (-R.xUtilFen // 2 + x))
-    except ZeroDivisionError:
-        tk.messagebox.showerror("erreur ", "les valeurs entrées e y doivent être differntes")
-
-
-def ycoord_rep_t(y):
-    try:
-        return -(R.yMin - (R.yDiff / R.yUtilFen) * (-R.yUtilFen // 2 + y))
-    except ZeroDivisionError:
-        tk.messagebox.showerror("erreur ", "les valeurs entrées e y doivent être differntes")
-
-
-def coord_rep_t(x, y):
-    return xcoord_rep_t(x), ycoord_rep_t()
-
-
+# paramètres de la tortue
 def clearT():
     t.clear()
     t.pencolor("black")
@@ -436,28 +436,31 @@ def clearT():
     t.fillcolor("black")
 
 
+def setT():
+    t.color(R.couleur)
+    t.width(R.epaisseur)
+    t.up()
+
+
 # tracer graphiques
 
 def tracer_axes():
-    def axex():
-        a = R.xMin
-        while t.xcor() < R.xUtilFen // 2:
-            t.setx(xcoord_t_rep(a))
-            if a % R.xPas == 0:
-                t.right(90)
-                t.fd(2)
-                if a != 0:
-                    t.up()
-                    t.fd(20)
-                    t.write(a, align='center')
-                    t.bk(20)
-                    t.pd()
-                t.bk(4)
-                t.fd(2)
-                t.left(90)
-            a += 1
-        # flèche bout axe
-        t.fd(3)
+    def graduation(a):
+        if a % R.xStep == 0:
+            t.right(90)
+            t.fd(2)
+            if a != 0:
+                t.up()
+                t.fd(20)
+                t.write(a, align='center')
+                t.bk(20)
+                t.pd()
+            t.bk(4)
+            t.fd(2)
+            t.left(90)
+
+    def fleche():
+        t.fd(5)
         t.begin_fill()
         t.left(90)
         t.fd(4)
@@ -468,37 +471,25 @@ def tracer_axes():
         t.right(135)
         t.fd(4)
         t.end_fill()
+
+    def axex():
+        a = R.xMin
+        while t.xcor() < R.xUtilFen // 2:
+            t.setx(coord(a, R.xMin, R.xMax, -R.xFenMax, R.xFenMax))
+            graduation(a)
+            a += 1
+        # flèche bout axe
+        fleche()
         t.up()
 
     def axey():
         a = R.yMin
         while t.ycor() < R.yUtilFen // 2:
-            t.sety(ycoord_t_rep(a))
-            if a % R.yPas == 0:
-                t.right(90)
-                t.fd(2)
-                if a != 0:
-                    t.up()
-                    t.fd(10)
-                    t.write(a, align='center')
-                    t.bk(10)
-                    t.pd()
-                t.bk(4)
-                t.fd(2)
-                t.left(90)
+            t.sety(coord(a, R.yMin, R.yMax, -R.yFenMax, R.yFenMax))
+            graduation(a)
             a += 1
         # flèche bout axe
-        t.fd(3)
-        t.begin_fill()
-        t.left(90)
-        t.fd(4)
-        t.right(135)
-        t.fd(4 * 2 ** 0.5)
-        t.right(90)
-        t.fd(4 * 2 ** 0.5)
-        t.right(135)
-        t.fd(4)
-        t.end_fill()
+        fleche()
         t.up()
 
     clearT()
@@ -506,29 +497,41 @@ def tracer_axes():
 
     # tracer axe des x
     if R.yMin > 0:
-        t.goto(coord_t_rep(R.xMin, R.yMin))
+        t.goto(coords(R.xMin, R.yMin, de_xmin=R.xMin, de_xmax=R.xMax, a_xmin=-R.xFenMax, a_xmax=R.xFenMax,
+                      de_ymin=R.yMin,
+                      de_ymax=R.yMax, a_ymin=-R.yFenMax, a_ymax=R.yFenMax))
         t.down()
         axex()
     elif R.yMax < 0:
-        t.goto(coord_t_rep(R.xMin, R.yMax))
+        t.goto(coords(R.xMin, R.yMax, de_xmin=R.xMin, de_xmax=R.xMax, a_xmin=-R.xFenMax, a_xmax=R.xFenMax,
+                      de_ymin=R.yMin,
+                      de_ymax=R.yMax, a_ymin=-R.yFenMax, a_ymax=R.yFenMax))
         t.down()
         axex()
     else:
-        t.goto(coord_t_rep(R.xMin, 0))
+        t.goto(
+            coords(R.xMin, 0, de_xmin=R.xMin, de_xmax=R.xMax, a_xmin=-R.xFenMax, a_xmax=R.xFenMax, de_ymin=R.yMin,
+                   de_ymax=R.yMax, a_ymin=-R.yFenMax, a_ymax=R.yFenMax))
         t.down()
         axex()
 
     # tracer axe des y
     if R.xMin > 0:
-        t.goto(coord_t_rep(R.xMin, R.yMin))
+        t.goto(coords(R.xMin, R.yMin, de_xmin=R.xMin, de_xmax=R.xMax, a_xmin=-R.xFenMax, a_xmax=R.xFenMax,
+                      de_ymin=R.yMin,
+                      de_ymax=R.yMax, a_ymin=-R.yFenMax, a_ymax=R.yFenMax))
         t.down()
         axey()
     elif R.xMax < 0:
-        t.goto(coord_t_rep(R.xMax, R.yMin))
+        t.goto(coords(R.xMax, R.yMin, de_xmin=R.xMin, de_xmax=R.xMax, a_xmin=-R.xFenMax, a_xmax=R.xFenMax,
+                      de_ymin=R.yMin,
+                      de_ymax=R.yMax, a_ymin=-R.yFenMax, a_ymax=R.yFenMax))
         t.down()
         axey()
     else:
-        t.goto(coord_t_rep(0, R.yMin))
+        t.goto(
+            coords(0, R.yMin, de_xmin=R.xMin, de_xmax=R.xMax, a_xmin=-R.xFenMax, a_xmax=R.xFenMax, de_ymin=R.yMin,
+                   de_ymax=R.yMax, a_ymin=-R.yFenMax, a_ymax=R.yFenMax))
         t.down()
         axey()
     t.up()
@@ -536,17 +539,16 @@ def tracer_axes():
 
 def tracer_graphe():
     clearT()
-
     tracer_axes()
+    setT()
 
-    t.color(R.couleur)
-    t.width(R.epaisseur)
-    t.up()
     g = R.xMin
     while g <= R.xMax:
 
         try:
-            t.goto(coord_t_rep(g, calculer(g)))
+            t.goto(coords(g, calculer(g), de_xmin=R.xMin, de_xmax=R.xMax, a_xmin=-R.xFenMax, a_xmax=R.xFenMax,
+                          de_ymin=R.yMin,
+                          de_ymax=R.yMax, a_ymin=-R.yFenMax, a_ymax=R.yFenMax))
             t.pd()
         except ValueError:
             t.up()
@@ -559,39 +561,39 @@ def tracer_graphe_d(a):
 
     tracer_axes()
 
-    t.color(R.couleur)
-    t.width(R.epaisseur)
-    t.up()
+    setT()
     g = R.xMin
     while g <= R.xMax:
 
         try:
-            t.goto(coord_t_rep(g, calculer_d(g, a)))
+            t.goto(
+                coords(g, calculer_d(g, a), de_xmin=R.xMin, de_xmax=R.xMax, a_xmin=-R.xFenMax, a_xmax=R.xFenMax,
+                       de_ymin=R.yMin,
+                       de_ymax=R.yMax, a_ymin=-R.yFenMax, a_ymax=R.yFenMax))
             t.pd()
         except ValueError:
             t.up()
 
         g += R.précision
     t.up()
-    t.goto(R.xUtilFen // 2 - 50, -R.yUtilFen // 2)
+    t.goto(R.xUtilFen // 2 - 100, -R.yUtilFen // 2)
     t.write("a= " + str(a))
 
 
 boutons = [
-    [["(", key_parenthese_ouvr], [")", key_parenthese_ferm], ["log", key_log], ["pow", key_pow], ["OFF", key_off]],
-    [["x", key_x], ["a", key_a], ["=", key_egal], ["ln", key_ln], ["TEST", test]],
-    [["sin⁻¹", key_acos], ["cos⁻¹", key_asin], ["tan⁻¹", key_atan], ["", ], ["arnd", key_arrondi]],
-    [["sin", key_sin], ["cos", key_cos], ["tan", key_tan], ["", ], ["", ]],
-    [["a²", key_carre], ["√", key_racine], ["exp", key_exp], ["", ], ["", ]],
-    [["7", key_7], ["8", key_8], ["9", key_9], ["⌫", key_effacer], ["AC", key_ac]],
-    [["4", key_4], ["5", key_5], ["6", key_6], ["+", key_plus], ["×", key_fois]],
-    [["1", key_1], ["2", key_2], ["3", key_3], ["-", key_moins], ["÷", key_div]],
-    [["0", key_0], [",", key_virg], ["E", key_e], ["π", key_pi], ["⏎", executer]]
+    [["pow", key_pow], ["OFF", key_off]],
+    [["tan⁻¹", key_atan], ["log", key_log], ],
+    [["sin⁻¹", key_acos], ["cos⁻¹", key_asin]],
+    [["sin", key_sin], ["cos", key_cos]],
+    [["exp", key_exp], ["tan", key_tan]],
+    [["sqrt", key_sqrt], ["ln", key_ln]],
+    [["AC", key_ac], ["TEST", test], ],
+    [["+", key_plus], ["×", key_fois]],
+    [["-", key_moins], ["÷", key_div]],
+    [["E", key_e], ["⏎", executer]]
 ]
 
-
-# déclaration de la fenêtre #
-
+sequence = []
 
 # déclaration de la fenêtre
 calc = tk.Tk()
@@ -605,10 +607,10 @@ f_turtle = tk.Frame(calc, relief="ridge", bg="grey")
 
 # affichage des frames
 f_commande.pack(side="left")
-f_clavier.pack(side="bottom", padx=5, pady=5)
-f_turtle.pack(side="right", padx=5, pady=5)
+f_clavier.pack(side="bottom")
+f_turtle.pack(side="right")
 
-# déclaration et affichage du label mode
+# déclaration et affichage du label modedans le label tortue
 mode = "Calculatrice"
 l_mode = Label(f_turtle, text=mode, bg="grey", fg="white")
 l_mode.pack()
@@ -620,10 +622,10 @@ l_expression = Label(lf_expression, text="", bg="white")
 l_expression.pack(padx=2, pady=2)
 
 # déclaration et affichage de la tortue
-fenTortue = turtle.Canvas(f_turtle, height=R.yFen, width=R.xFen)  # taille fenTortue
+fenTortue = turtle.Canvas(f_turtle, height=R.yFen, width=R.xFen)
 fenTortue.pack(padx=10, pady=10)
-screen = turtle.TurtleScreen(fenTortue)
-t = turtle.RawTurtle(screen)
+ecran = turtle.TurtleScreen(fenTortue)
+t = turtle.RawTurtle(ecran)
 t.ht()
 
 # affichage des boutons
@@ -648,19 +650,16 @@ mode.add_command(label="Grapheur Dynamique", command=mode_dyna)
 menu.add_cascade(label='Mode', menu=mode)
 
 parametres = tk.Menu(menu, tearoff=0)
-parametres.add_command(label="Fenêtre graphique", command=param_repere)
-parametres.add_command(label="Dynamique", command=param_dyna)
-parametres.add_command(label="Crayon", command=parm_pen)
+parametres.add_command(label="Fenêtre graphique", command=menu_repere)
+parametres.add_command(label="Dynamique", command=menu_dyna)
+parametres.add_command(label="Crayon", command=menu_pen)
 parametres.add_separator()
-parametres.add_command(label="adapter fenêtre")
+parametres.add_command(label="adapter fenêtre", command=adapter)
 menu.add_cascade(label="pamètres", menu=parametres)
 
 calc.config(menu=menu)
 
 # afichage de la fenetre
-calc.minsize(calc.winfo_width(), calc.winfo_height())
 calc.mainloop()
 
-
-# Début fenêtre #
-
+# Début fenêtre
