@@ -9,8 +9,6 @@ import R
 import operations
 
 
-
-
 # fonction pour boutons
 # ATTENTION ONT BESOIN DU PROGRAMME PRINCIPAL
 
@@ -21,7 +19,8 @@ def key_off():
 
 
 def key_ac():
-    l_expression["text"] = ""
+    global sequence
+    sequence = []
     R.Dyna = False
     t.clear()
     time.sleep(0.5)
@@ -57,8 +56,7 @@ def key_exp():
 
 
 def key_ln():
-    # TODO ajouter ln
-    print('à ajouter')
+    print()
 
 
 def key_log():
@@ -66,7 +64,7 @@ def key_log():
 
 
 def key_e():
-    boite_de_dialogue2(operations.puissance_de_10,'Nombre :', 'puissance :','Puissance de 10 :')
+    boite_de_dialogue2(operations.puissance_de_10, 'Nombre :', 'puissance :', 'Puissance de 10 :')
 
 
 def key_cos():
@@ -94,7 +92,9 @@ def key_atan():
 
 
 def test():
-    print('rien a tester')
+    print(calcul(0, 0))
+    print(calcul(0.5, 0))
+    print(calcul(0.25, 0))
 
 
 def executer():
@@ -129,12 +129,12 @@ def executer():
 
 def boite_de_dialogue2(func, nb1, nb2, titre):
     def ok():
-        if e_nb_1.get() == 'x' or e_nb_1.get() == 'a':
+        if e_nb_1.get() == 'x' or e_nb_1.get() == 'a' or e_nb_1.get() == 'last':
             a = e_nb_1.get()
         else:
             a = int(e_nb_1.get())
 
-        if e_nb_2.get() == 'x' or e_nb_2.get() == 'a':
+        if e_nb_2.get() == 'x' or e_nb_2.get() == 'a' or e_nb_2.get() == 'last':
             b = e_nb_2.get()
         else:
             b = int(e_nb_2.get())
@@ -143,41 +143,48 @@ def boite_de_dialogue2(func, nb1, nb2, titre):
         print(sequence)
         dialogue.destroy()
 
+    def dernier_resultat1():
+        e_nb_1.set("last")
+
+    def dernier_resultat2():
+        e_nb_2.set("last")
+
     dialogue = tk.Toplevel(calc)
     dialogue.title(titre)
     tk.Label(dialogue, text=nb1).pack()
     e_nb_1 = tk.StringVar()
     tk.Entry(dialogue, textvariable=e_nb_1).pack()
-    tk.Button(dialogue, text='résultat précédant').pack()
+    tk.Button(dialogue, text='résultat précédant', command=dernier_resultat1).pack()
 
     tk.Label(dialogue, text=nb2).pack()
     e_nb_2 = tk.StringVar()
     tk.Entry(dialogue, textvariable=e_nb_2).pack()
-    tk.Button(dialogue, text='résultat précédant').pack()
+    tk.Button(dialogue, text='résultat précédant', command=dernier_resultat2).pack()
     tk.Button(dialogue, text="OK", command=ok).pack()
     dialogue.mainloop()
 
 
 def boite_de_dialogue1(func, nb1, titre):
     def ok():
-        try:
-            a = int(e_nb_1.get())
-        except ValueError:
-            if e_nb_1.get() == 'x' or e_nb_1.get() == 'a':
-                a = e_nb_1.get()
-            else:
-                raise ValueError
+
+        if e_nb.get() == 'x' or e_nb.get() == 'a' or e_nb.get() == "last":
+            a = e_nb.get()
+        else:
+            a = int(e_nb.get())
 
         sequence.append([func, a])
         print(sequence)
         dialogue.destroy()
 
+    def dernier_resultat():
+        e_nb.set("last")
+
     dialogue = tk.Toplevel(calc)
     dialogue.title(titre)
     tk.Label(dialogue, text=nb1).pack()
-    e_nb_1 = tk.StringVar()
-    tk.Entry(dialogue, textvariable=e_nb_1).pack()
-    tk.Button(dialogue, text='résultat précédant').pack()
+    e_nb = tk.StringVar()
+    tk.Entry(dialogue, textvariable=e_nb).pack()
+    tk.Button(dialogue, text='résultat précédant', command=dernier_resultat).pack()
     tk.Button(dialogue, text="OK", command=ok).pack()
     dialogue.mainloop()
 
@@ -388,20 +395,44 @@ def mode_dyna():
     R.Dyna = True
 
 
-def str_equation(expr):
-    str_expr = ""
-    for i in range(len(expr)):
-        str_expr += expr[i]
-    return str_expr
+# TODO str de l expression
+
 
 
 # fonctions de calcul
-def calculer(x):
-    return math.sqrt(x)
+def calcul(x=0, a=0):
+    res = None
+    for i in sequence:
+        if len(i) == 2:
+            if i[1] == "last":
+                nb_1 = res
+            elif i[1] == "x":
+                nb_1 = x
+            elif i[1] == "a":
+                nb_1 = a
+            else:
+                nb_1 = i[1]
+            res = i[0](nb_1)
+        else:
+            if i[1] == "last":
+                nb_1 = res
+            elif i[1] == "x":
+                nb_1 = x
+            elif i[1] == "a":
+                nb_1 = a
+            else:
+                nb_1 = i[1]
 
-
-def calculer_d(x, a):
-    return a / x
+            if i[2] == "last":
+                nb_2 = res
+            elif i[2] == "x":
+                nb_2 = x
+            elif i[2] == "a":
+                nb_2 = a
+            else:
+                nb_2 = i[2]
+            res = i[0](nb_1, nb_2)
+    return res
 
 
 # fonctions de coordonées
@@ -542,7 +573,7 @@ def tracer_graphe():
     while g <= R.xMax:
 
         try:
-            t.goto(coords(g, calculer(g), de_xmin=R.xMin, de_xmax=R.xMax, a_xmin=-R.xFenMax, a_xmax=R.xFenMax,
+            t.goto(coords(g, calcul(g, 0), de_xmin=R.xMin, de_xmax=R.xMax, a_xmin=-R.xFenMax, a_xmax=R.xFenMax,
                           de_ymin=R.yMin,
                           de_ymax=R.yMax, a_ymin=-R.yFenMax, a_ymax=R.yFenMax))
             t.pd()
@@ -563,7 +594,7 @@ def tracer_graphe_d(a):
 
         try:
             t.goto(
-                coords(g, calculer_d(g, a), de_xmin=R.xMin, de_xmax=R.xMax, a_xmin=-R.xFenMax, a_xmax=R.xFenMax,
+                coords(g, calcul(x=g, a=a), de_xmin=R.xMin, de_xmax=R.xMax, a_xmin=-R.xFenMax, a_xmax=R.xFenMax,
                        de_ymin=R.yMin,
                        de_ymax=R.yMax, a_ymin=-R.yFenMax, a_ymax=R.yFenMax))
             t.pd()
@@ -588,7 +619,6 @@ boutons = [
     [["-", key_moins], ["÷", key_div]],
     [["E", key_e], ["⏎", executer]]
 ]
-
 
 sequence = []
 
