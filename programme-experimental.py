@@ -8,7 +8,7 @@ import math
 import R
 import operations
 
-expression = []
+
 
 
 # fonction pour boutons
@@ -22,7 +22,6 @@ def key_off():
 
 def key_ac():
     l_expression["text"] = ""
-    expression.clear()
     R.Dyna = False
     t.clear()
     time.sleep(0.5)
@@ -42,7 +41,7 @@ def key_fois():
 
 
 def key_div():
-    boite_de_dialogue2(operations.division, 'Nombre 1:', 'Nombre 2:', 'Division')
+    boite_de_dialogue2(operations.division, 'Numerateur', 'Denominateur', 'Division')
 
 
 def key_pow():
@@ -67,10 +66,7 @@ def key_log():
 
 
 def key_e():
-    expression.append("×")
-    expression.append("10")
-    expression.append("^")
-    l_expression["text"] = str_equation(expression)
+    boite_de_dialogue2(operations.puissance_de_10,'Nombre :', 'puissance :','Puissance de 10 :')
 
 
 def key_cos():
@@ -98,7 +94,7 @@ def key_atan():
 
 
 def test():
-    print(expression)
+    print('rien a tester')
 
 
 def executer():
@@ -401,7 +397,7 @@ def str_equation(expr):
 
 # fonctions de calcul
 def calculer(x):
-    return math.sin(x)
+    return math.sqrt(x)
 
 
 def calculer_d(x, a):
@@ -592,6 +588,7 @@ boutons = [
     [["-", key_moins], ["÷", key_div]],
     [["E", key_e], ["⏎", executer]]
 ]
+
 
 sequence = []
 
